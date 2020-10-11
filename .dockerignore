@@ -1,0 +1,22 @@
+# git
+.git/
+**/.gitattributes
+**/.gitignore
+
+# backend
+build/
+backend/cmd/assets/generated_assets.go
+
+
+# cocos
+cocos/
+
+# frontend
+**/node_modules/
+frontend/**/dist/
+frontend/coverage
+frontend/**/screenshots
+frontend/*-debug.log
+
+# docs
+docs/
