@@ -1,4 +1,2 @@
 # WeTalk
-A opensource for English learner to sharing audio file speaking English
-Other members can comment on the timeline of a audio file to help the owner can realize what is
-wrong with his/her pronuncication
+An opensource for English learners to sharing audio files speaking English and other members can comment on the timeline of an audio file to help the owner can realize what is wrong with his/her pronunciation
