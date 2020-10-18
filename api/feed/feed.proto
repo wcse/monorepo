@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package feed;
+
+option go_package = "github.com/wcse/monorepo/backend/api/feed;feed";
+
+service Feed {
+    // API for creating feed
+    rpc Post (PostRequest) returns (PostReply) {}
+}
+
+message PostRequest {
+    string caption = 1;
+    // TODO add more detail
+}
+
+message PostReply {
+    // TODO posting status
+}

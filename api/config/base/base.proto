@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package config.base;
+
+option go_package = "github.com/wcse/monorepo/backend/api/config/base;base";
+
+import "validate/validate.proto";
+
+message Logger {
+  enum Level {
+    UNSPECIFIED = 0;
+    DEBUG = 1;
+    INFO = 2;
+    WARN = 3;
+    ERROR = 4;
+    PANIC = 5;
+    FATAL = 6;
+  }
+  Level level = 1;
+
+  oneof format {
+    bool pretty = 2;
+  }
+}
+
+message TCPSocket {
+  string address = 1 [ (validate.rules).string = {min_bytes : 1} ];
+  uint32 port = 2 [ (validate.rules).uint32 = {lte : 65535} ];
+  bool secure = 3;
+}
+
+message UnixSocket {
+  string path = 1 [ (validate.rules).string = {min_bytes : 1} ];
+}
+
+message Listener {
+  oneof socket {
+    option (validate.required) = true;
+
+    TCPSocket tcp = 1;
+    UnixSocket unix = 2;
+  }
+}
+
+message Database {
+  string url = 1 [ (validate.rules).string = {min_bytes : 1} ];
+  bool debug = 2;
+}
+
+message JwtSigning {
+  string private_key = 1 [ (validate.rules).string = {min_bytes : 1} ];
+  string password = 2 [ (validate.rules).string = {min_bytes : 1} ];
+  // in seconds
+  int64 expires_time = 3;
+}
