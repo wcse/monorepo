@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "packages/*",
+    "wetalk"
+  ],
+  "version": "0.0.0",
+  "useWorkspces": true,
+  "npmClient": "yarn"
+}
