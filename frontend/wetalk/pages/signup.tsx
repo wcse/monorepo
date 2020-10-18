@@ -19,9 +19,10 @@ const SignUp = () => {
                 nostrum doloribus nisi soluta quasi officia!
               </p>
               <div className="text-gray-500">
-                You have an accout?
                 <Link href="/signin">
-                  <a className="text-blue-500 ml-2 font-bold">Sign In</a>
+                  <a className="text-blue-500 ml-2 font-bold">
+                    Already have an account?
+                  </a>
                 </Link>
               </div>
             </div>
