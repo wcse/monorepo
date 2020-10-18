@@ -1,0 +1,38 @@
+//protoc  --go_out=backend --go-grpc_out=backend api/identity.proto
+syntax = "proto3";
+
+package identity;
+
+option go_package = "api/identity;identity";
+
+
+service Auth {
+  rpc Register (RegisterRequest) returns (AuthReply) {}
+  rpc Login (LoginRequest) returns (AuthReply) {}
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenReply){}
+}
+
+message RegisterRequest{
+  string username = 1;
+  string password = 2;
+  string confirm_password = 3;
+}
+
+message LoginRequest{
+  string username = 1;
+  string password = 2;
+}
+
+message AuthReply{
+  string user_id = 1;
+  string token = 3;
+}
+
+message VerifyTokenRequest{
+  string token = 1;
+}
+
+message VerifyTokenReply{
+  bool valid = 1;
+  string user_id = 2;
+}
