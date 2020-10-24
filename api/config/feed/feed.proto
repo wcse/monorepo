@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package config.feed;
+
+option go_package = "github.com/wcse/monorepo/backend/api/config/feed;feed";
+
+import "config/base/base.proto";
+import "validate/validate.proto";
+
+message Config {
+  config.base.Listener listener = 1 [ (validate.rules).message = {required : true} ];
+  config.base.Logger logger = 2 [ (validate.rules).message = {required : true} ];
+}
