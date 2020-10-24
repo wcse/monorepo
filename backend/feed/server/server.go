@@ -57,6 +57,7 @@ func RunWithConfig(cfg *conf.Config) {
 	server := grpc.NewServer()
 	serverIml := newServerImpl(logger)
 	feed.RegisterFeedServer(server, serverIml)
+	fmt.Printf("%s:%d", cfg.Listener.GetTcp().Address, cfg.Listener.GetTcp().Port)
 	if err = server.Serve(listener); err != nil {
 		logger.Fatal("failed to serve", zap.Error(err))
 	}
