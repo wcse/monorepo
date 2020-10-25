@@ -44,7 +44,36 @@ func (m *PostRequest) Validate() error {
 		return nil
 	}
 
+	if uri, err := url.Parse(m.GetAudioUrl()); err != nil {
+		return PostRequestValidationError{
+			field:  "AudioUrl",
+			reason: "value must be a valid URI",
+			cause:  err,
+		}
+	} else if !uri.IsAbs() {
+		return PostRequestValidationError{
+			field:  "AudioUrl",
+			reason: "value must be absolute",
+		}
+	}
+
 	// no validation rules for Caption
+
+	// no validation rules for Transcript
+
+	if _, ok := _PostRequest_Privacy_NotInLookup[m.GetPrivacy()]; ok {
+		return PostRequestValidationError{
+			field:  "Privacy",
+			reason: "value must not be in list [0]",
+		}
+	}
+
+	if _, ok := Privacy_name[int32(m.GetPrivacy())]; !ok {
+		return PostRequestValidationError{
+			field:  "Privacy",
+			reason: "value must be one of the defined enum values",
+		}
+	}
 
 	return nil
 }
@@ -103,12 +132,18 @@ var _ interface {
 	ErrorName() string
 } = PostRequestValidationError{}
 
+var _PostRequest_Privacy_NotInLookup = map[Privacy]struct{}{
+	0: {},
+}
+
 // Validate checks the field values on PostReply with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
 func (m *PostReply) Validate() error {
 	if m == nil {
 		return nil
 	}
+
+	// no validation rules for FeedId
 
 	return nil
 }

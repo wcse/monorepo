@@ -10,4 +10,5 @@ import "validate/validate.proto";
 message Config {
   config.base.Listener listener = 1 [ (validate.rules).message = {required : true} ];
   config.base.Logger logger = 2 [ (validate.rules).message = {required : true} ];
+  config.base.Database database = 3 [(validate.rules).message.required = true];
 }

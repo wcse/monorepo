@@ -3,15 +3,19 @@ package server
 import (
 	"context"
 	"fmt"
-	conf "github.com/wcse/monorepo/backend/api/config/feed"
-	"github.com/wcse/monorepo/backend/api/feed"
-	"github.com/wcse/monorepo/backend/shared/config"
-	"github.com/wcse/monorepo/backend/shared/logging"
+	"github.com/google/uuid"
+	entFeed "github.com/wcse/monorepo/backend/feed/ent/feed"
 	"net"
 	"os"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+
+	conf "github.com/wcse/monorepo/backend/api/config/feed"
+	"github.com/wcse/monorepo/backend/api/feed"
+	"github.com/wcse/monorepo/backend/feed/ent"
+	"github.com/wcse/monorepo/backend/shared/config"
+	"github.com/wcse/monorepo/backend/shared/logging"
 )
 
 // Run ...
@@ -49,13 +53,27 @@ func RunWithConfig(cfg *conf.Config) {
 		}
 	}()
 
+	// Init database ent
+	dbEnt, err := ent.Open("mysql", cfg.Database.Url)
+	if err != nil {
+		logger.Fatal("failed to connect to mysql", zap.Error(err))
+	}
+	defer func() {
+		if err := dbEnt.Close(); err != nil {
+			panic(err)
+		}
+	}()
+	if err := dbEnt.Schema.Create(context.Background()); err != nil {
+		logger.Fatal("failed creating schema resources", zap.Error(err))
+	}
+
 	// Init listener
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", cfg.Listener.GetTcp().Address, cfg.Listener.GetTcp().Port))
 	if err != nil {
 		logger.Fatal("failed to new listener", zap.Error(err))
 	}
 	server := grpc.NewServer()
-	serverIml := newServerImpl(logger)
+	serverIml := newServerImpl(logger, dbEnt)
 	feed.RegisterFeedServer(server, serverIml)
 	if err = server.Serve(listener); err != nil {
 		logger.Fatal("failed to serve", zap.Error(err))
@@ -63,20 +81,43 @@ func RunWithConfig(cfg *conf.Config) {
 	// Lock by Serve
 }
 
-func newServerImpl(logger *zap.Logger) *serverImpl {
+func newServerImpl(logger *zap.Logger, client *ent.Client) *serverImpl {
 	return &serverImpl{
 		logger: logger.With(zap.String("serviceName", "feed")),
+		client: client,
 	}
 }
 
 type serverImpl struct {
 	feed.UnimplementedFeedServer
 	logger *zap.Logger
+	client *ent.Client
 }
 
-// Register will be called from client-side
-func (s *serverImpl) Post(_ context.Context, req *feed.PostRequest) (*feed.PostReply, error) {
-	s.logger.Debug("Post", zap.Any("req", req))
+func (s *serverImpl) Post(ctx context.Context, req *feed.PostRequest) (*feed.PostReply, error) {
+	s.logger.Debug("Post", zap.Any("request", req))
 
-	return &feed.PostReply{}, nil
+	if err := req.Validate(); err != nil {
+		s.logger.Error("bad request", zap.Error(err))
+		return nil, err
+	}
+
+	// TODO fake userID
+	userID := uuid.New().String()
+
+	f, err := s.client.Feed.Create().
+		SetAudioURL(req.AudioUrl).
+		SetCaption(req.Caption).
+		SetTranscript(req.Transcript).
+		SetPrivacy(entFeed.Privacy(req.Privacy.String())).
+		SetOwnerID(userID).
+		Save(ctx)
+	if err != nil {
+		s.logger.Error("can not save feed", zap.Error(err))
+		return nil, err
+	}
+
+	return &feed.PostReply{
+		FeedId: f.FeedID.String(),
+	}, nil
 }

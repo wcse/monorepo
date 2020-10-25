@@ -77,6 +77,23 @@ func (m *Config) Validate() error {
 		}
 	}
 
+	if m.GetDatabase() == nil {
+		return ConfigValidationError{
+			field:  "Database",
+			reason: "value is required",
+		}
+	}
+
+	if v, ok := interface{}(m.GetDatabase()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ConfigValidationError{
+				field:  "Database",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	return nil
 }
 
