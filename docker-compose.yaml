@@ -49,10 +49,8 @@ services:
 # BE
   wetalk-feed:
     build:
-      context: ./backend
-      dockerfile: ./Dockerfile
-      args:
-        project: ./feed/
+      context: ./
+      dockerfile: backend/feed/Dockerfile
     depends_on:
       - wetalk-db
     environment:
@@ -68,10 +66,8 @@ services:
 
   wetalk-comment:
     build:
-      context: ./backend
-      dockerfile: ./Dockerfile
-      args:
-        project: ./comment/
+      context: ./
+      dockerfile: ./backend/comment/Dockerfile
     depends_on:
       - wetalk-db
     environment:
