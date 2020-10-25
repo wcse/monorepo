@@ -47,6 +47,12 @@ static_resources:
                           route:
                             cluster: identity_cluster
                             max_grpc_timeout: 0s
+                        - match:
+                            prefix: /upload
+                          route:
+                            cluster: upload_cluster
+                            prefix_rewrite: /
+                            timeout: 60s
                       cors:
                         allow_origin_string_match:
                           - prefix: "*"
@@ -89,6 +95,10 @@ static_resources:
                             prefix: /profile.Profile/Update
                           requires:
                             provider_name: provider_wetalk_identity
+                        - match:
+                            prefix: /upload
+                          requires:
+                            provider_name: provider_wetalk_identity
                   - name: envoy.filters.http.lua
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
@@ -114,6 +124,19 @@ static_resources:
                   address:
                     socket_address:
                       address: identity
+                      port_value: 8080
+    - name: upload_cluster
+      connect_timeout: 1s
+      type: logical_dns
+      lb_policy: round_robin
+      load_assignment:
+        cluster_name: upload_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: upload
                       port_value: 8080
     - name: identity_jwks_cluster
       connect_timeout: 1s
