@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.1'
 services:
 
 # Gateway
@@ -17,32 +17,10 @@ services:
   wetalk-db:
     image: mysql:8.0.21
     container_name: wetalk-db
-    ports:
-      - 3336:3306
-    environment:
-      - MYSQL_ROOT_HOST=${DB_HOST}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    env_file:
+      - ~/.wcse/credentials.env
     volumes:
       - db_volume:/var/lib/mysql
-    networks:
-      - wetalk-network
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin-container
-    depends_on:
-      - wetalk-db
-    environment:
-      - PMA_HOST=wetalk-db # Note the "mysql". Must be the name of the what you used as the mysql service.
-      - PMA_USER=${DB_USER}
-      - PMA_PORT=${DB_PORT}
-      - PMA_PASSWORD=${DB_PASSWORD}
-    ports:
-      - 9090:80
-    restart: always
     networks:
       - wetalk-network
 
@@ -53,31 +31,14 @@ services:
       dockerfile: backend/feed/Dockerfile
     depends_on:
       - wetalk-db
-    environment:
-      - PORT=3001
-      - APP_NAME=feed
+    env_file:
+      - ~/.wcse/credentials.env
     ports:
       - 8081:8080
+    command: bash -c "./wait-for-it.sh $${DB_HOST}:$${DB_PORT} && ./app/server -c /app/config.yaml"
     restart: on-failure
     volumes:
       - feed_volume:/usr/src/feed/
-    networks:
-      - wetalk-network
-
-  wetalk-comment:
-    build:
-      context: ./
-      dockerfile: ./backend/comment/Dockerfile
-    depends_on:
-      - wetalk-db
-    environment:
-      - PORT=3001
-      - APP_NAME=comment
-    ports:
-      - 8082:8080
-    restart: on-failure
-    volumes:
-      - comment_volume:/usr/src/comment/
     networks:
       - wetalk-network
 

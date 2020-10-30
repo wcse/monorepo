@@ -28,6 +28,8 @@ func Run(f *config.Flags) {
 		tmpLogger.Fatal("parsing configuration failed", zap.Error(err))
 	}
 
+	tmpLogger.Info(cfg.Database.Url)
+
 	if err := cfg.Validate(); err != nil {
 		tmpLogger.Fatal("validating configuration failed", zap.Error(err))
 	}
@@ -54,6 +56,7 @@ func RunWithConfig(cfg *conf.Config) {
 	}()
 
 	// Init database ent
+	logger.Info(cfg.Database.Url)
 	dbEnt, err := ent.Open("mysql", cfg.Database.Url)
 	if err != nil {
 		logger.Fatal("failed to connect to mysql", zap.Error(err))
