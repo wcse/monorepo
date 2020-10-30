@@ -6,6 +6,7 @@
 - NextJS (SSR of ReactJS)
 - Redux, Redux-thunk
 - Tailwind (CSS Framework)
+- React Hool Form (Form Validation)
 
 # Run Wetalk app in local
 

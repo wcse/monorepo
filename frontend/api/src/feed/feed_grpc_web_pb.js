@@ -15,6 +15,8 @@
 const grpc = {};
 grpc.web = require('grpc-web');
 
+
+var validate_validate_pb = require('../validate/validate_pb.js')
 const proto = {};
 proto.feed = require('./feed_pb.js');
 

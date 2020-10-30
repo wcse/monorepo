@@ -7,3 +7,7 @@ listener:
 logger:
   pretty: true
   level: DEBUG
+
+database:
+  url: root:yG!C7d8WCk@tcp(db-feed:3306)/wetalk-feed?charset=utf8&parseTime=true
+  debug: false
