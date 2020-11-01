@@ -1,0 +1,63 @@
+version: '3.1'
+services:
+
+# Gateway
+  wetalk-gateway:
+    build:
+      context: ./backend/gateway
+      dockerfile: ./Dockerfile
+    image: wetalk-gateway
+    ports:
+      - 8080:8080
+    restart: on-failure
+    networks:
+      - wetalk-network
+
+# DB
+  wetalk-db:
+    image: mysql:8.0.21
+    container_name: wetalk-db
+    env_file:
+      - ~/.wcse/credentials.env
+    volumes:
+      - db_volume:/var/lib/mysql
+    networks:
+      - wetalk-network
+
+# BE
+  wetalk-feed:
+    build:
+      context: ./
+      dockerfile: backend/feed/Dockerfile
+    depends_on:
+      - wetalk-db
+    env_file:
+      - ~/.wcse/credentials.env
+    ports:
+      - 8081:8080
+    command: bash -c "./wait-for-it.sh $${DB_HOST}:$${DB_PORT} && ./app/server -c /app/config.yaml"
+    restart: on-failure
+    volumes:
+      - feed_volume:/usr/src/feed/
+    networks:
+      - wetalk-network
+
+#  FE
+  wetalk-frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 8083:3000
+    restart: on-failure
+    networks:
+      - wetalk-network
+
+volumes:
+  feed_volume:
+  comment_volume:
+  db_volume:
+
+networks:
+  wetalk-network:
+    driver: bridge

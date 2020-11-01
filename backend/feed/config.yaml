@@ -9,5 +9,6 @@ logger:
   level: DEBUG
 
 database:
-  url: root:yG!C7d8WCk@tcp(db-feed:3306)/wetalk-feed?charset=utf8&parseTime=true
+#  url: root:yG!C7d8WCk@tcp(db-feed:3306)/wetalk-feed?charset=utf8&parseTime=true
+  url: ${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}?charset=utf8&parseTime=true
   debug: false
