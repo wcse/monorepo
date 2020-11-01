@@ -4,3 +4,7 @@ html,
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.sign-up-form {
+  border-right: 1px solid #e2e8f0;
+}
