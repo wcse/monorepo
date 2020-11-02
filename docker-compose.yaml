@@ -1,7 +1,7 @@
 version: '3.1'
 services:
 
-# Gateway
+  # Gateway
   wetalk-gateway:
     build:
       context: ./backend/gateway
@@ -13,18 +13,20 @@ services:
     networks:
       - wetalk-network
 
-# DB
+  # DB
   wetalk-db:
     image: mysql:8.0.21
     container_name: wetalk-db
     env_file:
       - ~/.wcse/credentials.env
+    ports:
+      - 3336:3306
     volumes:
       - db_volume:/var/lib/mysql
     networks:
       - wetalk-network
 
-# BE
+  # BE
   wetalk-feed:
     build:
       context: ./
@@ -42,7 +44,24 @@ services:
     networks:
       - wetalk-network
 
-#  FE
+  wetalk-comment:
+    build:
+      context: ./
+      dockerfile: backend/comment/Dockerfile
+    depends_on:
+      - wetalk-db
+    env_file:
+      - ~/.wcse/credentials.env
+    ports:
+      - 8082:8080
+    command: bash -c "./wait-for-it.sh $${DB_HOST}:$${DB_PORT} && ./app/server -c /app/config.yaml"
+    restart: on-failure
+    volumes:
+      - comment_volume:/usr/src/comment/
+    networks:
+      - wetalk-network
+
+  #  FE
   wetalk-frontend:
     build:
       context: ./frontend

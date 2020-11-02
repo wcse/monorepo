@@ -1,0 +1,13 @@
+listener:
+  tcp:
+    address: 0.0.0.0
+    port: 8082
+    secure: false
+
+logger:
+  pretty: true
+  level: DEBUG
+
+database:
+  url: wetalk:wetalk@tcp(localhost:3336)/wetalk?charset=utf8&parseTime=true
+  debug: false
