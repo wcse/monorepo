@@ -1,0 +1,13 @@
+listener:
+  tcp:
+    address: 0.0.0.0
+    port: 8080
+    secure: false
+
+logger:
+  pretty: true
+  level: DEBUG
+
+database:
+  url: ${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}?charset=utf8&parseTime=true
+  debug: false

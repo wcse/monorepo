@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package comment;
+
+option go_package = "github.com/wcse/monorepo/backend/api/comment;comment";
+
+import "validate/validate.proto";
+
+service comment {
+  // API for creating comment
+  rpc Write (CommentRequest) returns (CommentReply) {}
+}
+
+message CommentRequest {
+  string feed_id = 1;
+  string content = 2;
+}
+
+message CommentReply {
+  string comment_id = 1;
+}

@@ -11,7 +11,7 @@ import (
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+const _ = grpc.SupportPackageIsVersion7
 
 // FeedClient is the client API for Feed service.
 //
@@ -51,12 +51,19 @@ type FeedServer interface {
 type UnimplementedFeedServer struct {
 }
 
-func (*UnimplementedFeedServer) Post(context.Context, *PostRequest) (*PostReply, error) {
+func (UnimplementedFeedServer) Post(context.Context, *PostRequest) (*PostReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Post not implemented")
 }
-func (*UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
+func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
-func RegisterFeedServer(s *grpc.Server, srv FeedServer) {
+// UnsafeFeedServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FeedServer will
+// result in compilation errors.
+type UnsafeFeedServer interface {
+	mustEmbedUnimplementedFeedServer()
+}
+
+func RegisterFeedServer(s grpc.ServiceRegistrar, srv FeedServer) {
 	s.RegisterService(&_Feed_serviceDesc, srv)
 }
 
