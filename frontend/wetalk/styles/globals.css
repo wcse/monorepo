@@ -23,3 +23,7 @@ body {
   font-weight: bold;
   border-bottom: 3px solid;
 }
+
+.sign-up-form {
+  border-right: 1px solid #e2e8f0;
+}

@@ -46,7 +46,7 @@ const Account = () => {
             </Link>
           </li>
           <li>
-            <Link href="/signup">
+            <Link href="/signin">
               <a className={styles.logout}>Logout</a>
             </Link>
           </li>
