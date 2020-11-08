@@ -1,4 +1,4 @@
-import styles from '../styles/identity.module.scss';
+import styles from '../../styles/identity.module.scss';
 
 const IdentityLayout = ({ children }) => {
   return (

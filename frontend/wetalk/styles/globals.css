@@ -3,4 +3,23 @@
 html,
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: #e2e8f0;
+}
+
+.main-header {
+  background-color: #0b205a;
+}
+
+.sign-up-form {
+  border-right: 1px solid #efefef;
+}
+
+.top-64px {
+  top: 64px;
+}
+
+.h-tabs .active {
+  color: #2b6cb0;
+  font-weight: bold;
+  border-bottom: 3px solid;
 }

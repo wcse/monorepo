@@ -1,6 +1,7 @@
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
-import IdentityLayout from '../layouts/Identity';
+
+import IdentityLayout from '../src/layouts/Identity';
 
 const SignUp = () => {
   return (

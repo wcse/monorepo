@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import IdentityLayout from '../layouts/Identity';
+import IdentityLayout from '../src/layouts/Identity';
 
 const SignIn = () => {
   const { handleSubmit, register, errors } = useForm();

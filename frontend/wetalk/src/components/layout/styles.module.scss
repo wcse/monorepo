@@ -1,0 +1,34 @@
+.sub_menu {
+  top: 64px;
+  z-index: 1050;
+
+  li:not(:last-child) {
+    border-bottom: 1px solid #0b205a;
+  }
+
+  a {
+    display: block;
+    padding: 0.35rem 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: lighten($color: #0b205a, $amount: 30);
+      color: #fff;
+    }
+  }
+
+  .logout {
+    &:hover {
+      background-color: lighten($color: red, $amount: 10);
+    }
+  }
+}
+
+.modal_backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+}

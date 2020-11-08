@@ -1,0 +1,19 @@
+.upload {
+  min-height: calc(100vh - 104px);
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .upload_container {
+    border: 2px solid #e2e8f0;
+    border-radius: 3px;
+    width: 40rem;
+    height: 20rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
