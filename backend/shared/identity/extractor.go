@@ -10,7 +10,7 @@ import (
 
 const (
 	// UserIDHeader ...
-	UserIDHeader = "x-cmgp-userid"
+	UserIDHeader = "x-wetalk-userid"
 	// SecWebSocketProtocol this headers seems not for authentication
 	// https://tools.ietf.org/html/rfc6455#section-4
 	// But we don't to put token in query path or first message
