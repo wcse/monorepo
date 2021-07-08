@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package config.upload;
+
+option go_package = "github.com/wcse/monorepo/backend/api/config/upload;upload";
+
+import "config/base/base.proto";
+
+message Config {
+  config.base.Listener listener = 1;
+  config.base.Logger logger = 2;
+}

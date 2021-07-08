@@ -3,6 +3,7 @@ module github.com/wcse/monorepo/backend
 go 1.14
 
 require (
+	github.com/aws/aws-sdk-go v1.35.14
 	github.com/envoyproxy/protoc-gen-validate v0.4.1
 	github.com/facebook/ent v0.4.0
 	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
